@@ -1,0 +1,25 @@
+.select-container {
+  position: relative;
+  display: inline-block;
+  margin: 0.5rem;
+}
+
+.select-container select {
+  padding: 16px;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 20px;
+  font-weight: 600;
+
+}
+
+.select-container select option {
+  background-color: #fff;
+  padding: 4px 8px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.select-container select option:hover {
+  background-color: #f5f5f5;
+}
