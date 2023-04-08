@@ -1,5 +1,5 @@
 import React from "react";
-import { formatDate } from "../../../../utils/date-format";
+import { formatDate } from "@utils";
 import { ICurrentWeather } from "../../models";
 import styles from "./current-weather.module.css";
 

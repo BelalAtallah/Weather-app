@@ -1,11 +1,11 @@
 import React from "react";
 import { IWeatherForecastList } from "../../models";
-import cloudy from "../../../../assets/cloudy.png";
-import partlyCloudy from "../../../../assets/partly-cloudy.png";
-import rain from "../../../../assets/rainy.png";
-import snowy from "../../../../assets/snowy.png";
-import sunny from "../../../../assets/sunny.png";
-import stormy from "../../../../assets/stormy.png";
+import cloudy from "@assets/cloudy.png";
+import partlyCloudy from "@assets/partly-cloudy.png";
+import rain from "@assets/rainy.png";
+import snowy from "@assets/snowy.png";
+import sunny from "@assets/sunny.png";
+import stormy from "@assets/stormy.png";
 import { useWeather, useWeatherUnit } from "../../hooks";
 import "./five-day-forecast.css";
 

@@ -1,6 +1,6 @@
 import React from "react";
-import "./unit-dropdown.css";
 import { WeatherUnit } from "../../models";
+import "./unit-dropdown.css";
 
 interface UnitDropdownProps {
   unit: WeatherUnit;
