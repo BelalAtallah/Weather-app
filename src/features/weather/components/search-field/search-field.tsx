@@ -1,8 +1,8 @@
 import { ReactSearchAutocomplete } from "react-search-autocomplete";
-import { useLayoutEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import cities from "cities.json";
-import "./search-field.css";
 import { ICity } from "../../models";
+import "./search-field.css";
 
 interface ISearchField {
   onSelectionChange: (event: ICity) => void;
@@ -11,13 +11,16 @@ interface ISearchField {
 export const SearchField = ({ onSelectionChange }: ISearchField) => {
   const [citiesList, setCitiesList] = useState<ICity[]>([]);
 
-  useLayoutEffect(() => {
-    const mappedCities = (cities as ICity[]).map((c, i) => ({
-      name: c.name,
-      id: i,
+  const mappedCities = useMemo(() => {
+    return (cities as ICity[]).map((city, index) => ({
+      name: city.name,
+      id: index,
     }));
-    setCitiesList(mappedCities);
   }, []);
+
+  useEffect(() => {
+    setCitiesList(mappedCities);
+  }, [mappedCities]);
 
   return (
     <div className="search-field">

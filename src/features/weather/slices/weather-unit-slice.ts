@@ -8,6 +8,7 @@ const weatherUnitSlice = createSlice<WeatherUnit, any, 'weatherUnit'>({
   initialState,
   reducers: {
     setUnit: (_state: any, action: PayloadAction<WeatherUnit>) => {
+      // Update the state by returning the payload value (either "metric" or "imperial")
       return action.payload;
     },
   },

@@ -1,38 +1,35 @@
-import { useSelector } from "react-redux";
+import React from "react";
 import { IWeatherForecastList } from "../../models";
-import { RootState } from "../../../../store/store";
-import { formatDate } from "../../../../utils/date-format";
-
-import "./five-day-forecast.css";
-
 import cloudy from "../../../../assets/cloudy.png";
 import partlyCloudy from "../../../../assets/partly-cloudy.png";
 import rain from "../../../../assets/rainy.png";
 import snowy from "../../../../assets/snowy.png";
 import sunny from "../../../../assets/sunny.png";
 import stormy from "../../../../assets/stormy.png";
+import { useWeather, useWeatherUnit } from "../../hooks";
+import "./five-day-forecast.css";
 
-export const FiveDayForecast = () => {
-  const weatherIconMap = {
-    Clouds: partlyCloudy,
-    Sunny: sunny,
-    Clear: sunny,
-    Rain: rain,
-    Overcast: cloudy,
-    Snow: snowy,
-    thunder: stormy,
-  };
+const weatherIconMap = {
+  Clouds: partlyCloudy,
+  Sunny: sunny,
+  Clear: sunny,
+  Rain: rain,
+  Overcast: cloudy,
+  Snow: snowy,
+  thunder: stormy,
+};
 
-  const getIcon = (weather: keyof typeof weatherIconMap) => {
-    return weatherIconMap[weather] || weatherIconMap.Clouds;
-  };
+const getIcon = (weather: keyof typeof weatherIconMap) => {
+  return weatherIconMap[weather] || weatherIconMap.Clouds;
+};
 
-  const weather = useSelector((state: RootState) => state.weather);
-  const unit = useSelector((state: RootState) => state.weatherUnit);
+const FiveDayForecastComponent = () => {
+  const weather = useWeather();
+  const unit = useWeatherUnit();
 
   const renderForecastItem = (forecast: IWeatherForecastList) => {
     const getFormattedDate = (date: number) => {
-      return formatDate(new Date(date * 1000).toString());
+      return new Date(date * 1000).toDateString();
     };
 
     const date = getFormattedDate(forecast.dt);
@@ -56,7 +53,12 @@ export const FiveDayForecast = () => {
 
   return (
     <div className="forecast-container">
-      {weather.forecast && weather.forecast.list.map(renderForecastItem)}
+      {weather.status === "loading" && <p>Loading...</p>}
+      {weather.status === "failed" && <p>Error: {weather.error}</p>}
+      {weather.status === "idle" &&
+        weather.forecast &&
+        weather.forecast.map(renderForecastItem)}
     </div>
   );
 };
+export const FiveDayForecast = React.memo(FiveDayForecastComponent);

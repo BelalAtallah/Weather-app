@@ -1,45 +1,43 @@
 import React from "react";
-import { useSelector } from "react-redux";
-import { RootState } from "../../../../store/store";
-import "./current-weather.css";
 import { formatDate } from "../../../../utils/date-format";
+import { ICurrentWeather } from "../../models";
+import styles from "./current-weather.module.css";
 
-export const CurrentWeather: React.FC = () => {
-  const weather = useSelector((state: RootState) => state.weather);
-  const unit = useSelector((state: RootState) => state.weatherUnit);
+interface ICurrentWeatherProps {
+  data: ICurrentWeather | null;
+  unit: string;
+}
 
+const CurrentWeatherComponent: React.FC<ICurrentWeatherProps> = ({
+  data,
+  unit,
+}) => {
   const getFormattedDate = (date: number) => {
     return formatDate(new Date(date * 1000).toString());
   };
 
   return (
-    <div className="current-weather">
-      {weather.status === "loading" && <p>Loading...</p>}
-      {weather.status === "failed" && <p>Error: {weather.error}</p>}
-      {weather.status === "idle" && weather.currentWeather && (
+    <div className={styles.currentWeather}>
+      {data && (
         <>
-          <p className="current-weather__country">
-            Current Weather in {weather.currentWeather.name},{" "}
-            {weather.currentWeather.sys.country}:
+          <p className={styles.country}>
+            Current Weather in {data.name}, {data.sys.country}:
           </p>
           <img
-            className="current-weather__icon"
-            src={`http://openweathermap.org/img/wn/${weather.currentWeather.weather[0].icon}@2x.png`}
-            alt={weather.currentWeather.weather[0].description}
+            className={styles.icon}
+            src={`https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`}
+            alt={data.weather[0].description}
           />
 
-          <div className="current-weather__description">
-            <p className="current-weather__temp">
-              {weather.currentWeather.main.temp}{" "}
-              {unit === "metric" ? "°C" : "°F"}
+          <div className={styles.description}>
+            <p className={styles.temp}>
+              {data.main.temp} {unit === "metric" ? "°C" : "°F"}
             </p>
 
-            <p className="current-weather__date">
-              {getFormattedDate(weather.currentWeather.dt)}
-            </p>
+            <p className={styles.date}>{getFormattedDate(data.dt)}</p>
 
-            <p className="current-weather__date">
-              {weather.currentWeather.weather[0].description}
+            <p className={styles.weatherDescription}>
+              {data.weather[0].description}
             </p>
           </div>
         </>
@@ -47,3 +45,12 @@ export const CurrentWeather: React.FC = () => {
     </div>
   );
 };
+
+const areEqual = (
+  prevProps: ICurrentWeatherProps,
+  nextProps: ICurrentWeatherProps
+) => {
+  return prevProps.data === nextProps.data && prevProps.unit === nextProps.unit;
+};
+
+export const CurrentWeather = React.memo(CurrentWeatherComponent, areEqual);

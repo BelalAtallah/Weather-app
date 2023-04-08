@@ -16,7 +16,6 @@
   border-radius: 0.5rem;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   flex: 1 1 calc(28% - 1rem);
-  max-width: calc(30% - 1rem);
 }
 
 .forecast-item img {

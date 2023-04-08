@@ -1,27 +1,32 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { ICurrentWeather, IWeatherForecast, WeatherUnit } from '../models'; // Update this import based on your folder structure
+import { ICurrentWeather, IWeatherForecastList, WeatherUnit } from '../models';
 import { getCurrentWeather, getFiveDayForecast } from '../services';
 
-interface WeatherState {
+export interface WeatherState {
     currentWeather: ICurrentWeather | null;
-    forecast: IWeatherForecast | null;
+    forecast: IWeatherForecastList[] | [];
     status: 'idle' | 'loading' | 'failed';
     error: string | null;
 }
 
 const initialState: WeatherState = {
     currentWeather: null,
-    forecast: null,
+    forecast: [],
     status: 'idle',
     error: null,
 };
 
+// Create an async thunk to fetch weather data
 export const fetchWeatherData = createAsyncThunk(
     'weather/fetchWeatherData',
     async (params: { city: string; unit: WeatherUnit }, thunkAPI) => {
         try {
-            const currentWeather = await getCurrentWeather(params.city, params.unit);
-            const fiveDayForecast = await getFiveDayForecast(params.city, params.unit);
+            // Fetch current weather and five-day forecast
+            const [currentWeather, fiveDayForecast] = await Promise.all([
+                getCurrentWeather(params.city, params.unit),
+                getFiveDayForecast(params.city, params.unit),
+            ]);
+
             return { currentWeather, forecast: { list: fiveDayForecast } };
         } catch (error: any) {
             return thunkAPI.rejectWithValue(error.response.data.message);
@@ -42,7 +47,7 @@ const weatherSlice = createSlice({
             .addCase(fetchWeatherData.fulfilled, (state, action) => {
                 state.status = 'idle';
                 state.currentWeather = action.payload.currentWeather;
-                state.forecast = action.payload.forecast;
+                state.forecast = action.payload.forecast.list;
                 state.error = null;
             })
             .addCase(fetchWeatherData.rejected, (state, action) => {

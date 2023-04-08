@@ -1,3 +1,7 @@
+.search-field {
+  z-index: 1;
+  position: relative;
+}
 .search-field li {
-    cursor: pointer;
+  cursor: pointer;
 }

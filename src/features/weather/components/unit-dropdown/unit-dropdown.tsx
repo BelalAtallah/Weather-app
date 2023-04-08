@@ -1,13 +1,16 @@
-import React from 'react';
-import './unit-dropdown.css';
-import { WeatherUnit } from '../../models';
+import React from "react";
+import "./unit-dropdown.css";
+import { WeatherUnit } from "../../models";
 
 interface UnitDropdownProps {
   unit: WeatherUnit;
   onUnitChange: (unit: WeatherUnit) => void;
 }
 
-export const UnitDropdown: React.FC<UnitDropdownProps> = ({ unit, onUnitChange }) => {
+export const UnitDropdown: React.FC<UnitDropdownProps> = ({
+  unit,
+  onUnitChange,
+}) => {
   const handleSetUnit = (event: React.ChangeEvent<HTMLSelectElement>) => {
     onUnitChange(event.target.value as WeatherUnit);
   };

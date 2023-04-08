@@ -4,7 +4,6 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { store } from "./store/store";
 import App from "./App";
 import { createRoot } from "react-dom/client";
-import { FiveDayForecast } from "./features/weather/components/five-day-forecast/five-day-forecast";
 
 let rootElement: Element | null = null;
 
@@ -16,7 +15,7 @@ document.addEventListener("DOMContentLoaded", () => {
       <Router>
         <Routes>
           <Route path="" element={<App />} />
-          <Route path="yesy" element={<FiveDayForecast />} />
+          <Route path="route" element={<p>Some random route</p>} />
         </Routes>
       </Router>
     </Provider>
